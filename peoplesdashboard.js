@@ -133,9 +133,9 @@ function addLayer ()
         var img = document.createElement('img');
         img.id='peoplesdashboard_palette';
         img.className='peoplesdashboard_overlay';
-        img.style.position="absolute";
-        img.style.bottom="0px";
-        img.style.left="0px";
+        img.style.position="fixed";
+        img.style.bottom="5px";
+        img.style.left="5px";
         img.style.width="100px";
         img.src="https://raw.githubusercontent.com/digitalmethodsinitiative/peoplesdashboard/master/palette.png";
         document.getElementsByTagName('body').item(0).appendChild(img);
@@ -156,15 +156,14 @@ function addButton() {
         var img = document.createElement('img');
         img.id='peoplesdashboard_button';
     	img.className='peoplesdashboard_off';
-        img.style.position="absolute";
-        img.style.top="0px";
-        img.style.right="20px";
+        img.style.marginTop="-43px";
+    	img.style.float="right";
     	img.style.zIndex="1000";
     	img.style.height="45px";
     	img.style.cursor="pointer";
         img.src="https://raw.githubusercontent.com/digitalmethodsinitiative/peoplesdashboard/master/TOGGLE-02.png";
     	img.onclick = function() { toggleButton(this); };
-        document.getElementsByTagName('body').item(0).appendChild(img);
+        document.getElementById('blueBarNAXAnchor').appendChild(img);
 }
 
 // actual toggle functionality
@@ -181,4 +180,5 @@ function toggleButton(el) {
     }
 }
 
-addButton();
+if(document.getElementById('peoplesdashboard_button')==null)
+	addButton();
