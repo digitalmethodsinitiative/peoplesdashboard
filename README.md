@@ -4,7 +4,16 @@ The people’s dashboard is intended to be a critical layer on top of six differ
 
 More info can be found on our [wiki](https://wiki.digitalmethods.net/Dmi/PeoplesDashboard).
 
+Currently only the People's Dashboard is only implemented for Facebook.
 
-# User script
 
-The People's dashboard is implemented as a user script which can be installed in [GreaseMonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/) (Firefox) or [TamperMonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en) (Chrome). Currently only the People's Dashboard is only implemented for Facebook.
+# How to Install
+
+## Firefox
+
+Install [GreaseMonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/). Make a new script, copy paste the code from [peoplesdashboard.js](https://raw.githubusercontent.com/digitalmethodsinitiative/peoplesdashboard/master/peoplesdashboard.js).
+
+## Chrome 
+
+Install [TamperMonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en). Make a new script, copy paste the code from [peoplesdashboard.js](https://raw.githubusercontent.com/digitalmethodsinitiative/peoplesdashboard/master/peoplesdashboard.js).
+
