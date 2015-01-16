@@ -17,3 +17,7 @@ Install [GreaseMonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonk
 
 Install [TamperMonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en). Make a new script, copy paste the code from [peoplesdashboard.js](https://raw.githubusercontent.com/digitalmethodsinitiative/peoplesdashboard/master/peoplesdashboard.js), go to Facebook and enjoy the People's Dashboard :).
 
+# ToDo
+
+* Facebook: login screen, pages
+* Other platforms
