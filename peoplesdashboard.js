@@ -3,15 +3,14 @@
 // @namespace    http://www.digitalmethods.net
 // @version      0.1
 // @description  enter something useful
-// @author       You
+// @author       Erik Borra <erik@digitalmethods.net>
 // @match        https://www.facebook.com/*
 // @grant        none
+// @todo         pages, dynamically loaded content
 // ==/UserScript==
 
 if (window.top != window.self)  //don't run on frames or iframes
     return;
-
-// define the colors
 
 /*
 - people data {H}: #ff7bfc - 50 % opacity
@@ -48,19 +47,31 @@ elementLocations["//*[@class='_1-1']"]="platform"; /*Pop up suggest friends in n
 // platform, added by erik
 elementLocations["//*[@class='ego_section']"]="platform";
 elementLocations["//*[@id='pagelet_canvas_nav_content']"]="platform";
-elementLocations["//*[@id='developerNav']"]="platform";
-elementLocations["//*[@id='interestsNav']"]="platform";
+elementLocations["//*[@id='developerNav']"]="people";
+elementLocations["//*[@id='interestsNav']"]="people";
+elementLocations["//*[@id='timeline_info_review_unit']"]="platform";
+elementLocations["//*[@id='u_ps_0_1_1']"]="people";
+elementLocations["//*[@id='fbCoverImageContainer']"]="people";
+elementLocations["//*[@id='u_0_1']"]="people";
+elementLocations["//*[@class='_c51']"]="people";
+elementLocations["//*[@class='pvm uiBoxWhite topborder']"]="people";
+elementLocations["//*[@class='groupsJumpBarContainer']"]="navigation";
+elementLocations["//*[@id='u_0_1b']"]="people";
+
 
 // people
 elementLocations["//*[@id='pagesNav']"]="people";
 elementLocations["//*[@id='listsNav']"]="people";
 elementLocations["//*[@id='pagelet_composer']"]="people";
-elementLocations["//*[@id='pinnedNav']"]="people";
+elementLocations["//*[@id='pinnedNav']"]="navigation";
 elementLocations["//*[@id='pagelet_welcome_box']"]="people";
 elementLocations["//*[@class='fbChatSidebarBody']"]="people";
-elementLocations["//*[@class='userContentWrapper _5pcr _3ccb']"]="people";
+elementLocations["//*[@id='stream_pagelet']//*[@class='userContentWrapper _5pcr _3ccb']"]="mixed";
+elementLocations["//*[@id='timeline_tab_content']//*[@class='userContentWrapper _5pcr _3ccb']"]="people";
+elementLocations["//*[@id='pagelet_group_mall']//*[@class='userContentWrapper _5pcr _3ccb']"]="people";
 elementLocations["//*[@class='_2dpe _1ayn']"]="people";
-elementLocations["//*[@class='_2wnm']"]="people";
+elementLocations["//*[@class='timelineUnitContainer fbTimelineComposerUnit']"]="people";
+elementLocations["//*[@class='_2wnm']"]="mixed";
 
 // mixed
 elementLocations["//*[@id='eventsNav']"]="mixed"; /*events sidebar*/
@@ -70,27 +81,26 @@ elementLocations["//*[@id='js_2p']"]="mixed";
 elementLocations["//*[@class='UFIBlingBox uiBlingBox feedbackBling']"]="mixed";// {M} /*numbers of likes, shares, comments*/
 elementLocations["//*[@class='tickerActivityStories']"]="mixed";
 elementLocations["//*[@class='fbReminders']"]="mixed";
+elementLocations["//*[@class='megaphone_location_home']"]="platform";
 
 // navigation
 elementLocations["//*[@class='_2pdh _3zm- _55bi _3zm- _55bh']"]="navigation";
 elementLocations["//*[@class='_5861 textInput _586g _586p focus_target']"]="navigation";
+elementLocations["//*[@id='u_0_r']"]="navigation";
 
-function LocalMain ()
+function addLayer ()
 {
     // loop over all element locations
     for(var query in elementLocations) {    
-        //var query = elementLocations[j];
         type = elementLocations[query]
         // locate element
         var els = document.evaluate(query, document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-    //    console.log(query,els.snapshotLength);
         // for each element found, add overlay with color
         for (var i = els.snapshotLength - 1; i >= 0; i--) {
-    //      console.log(type,query);
             var elm = els.snapshotItem(i);
             elm.style.position="relative";
             var overlay = document.createElement("div");
-            overlay.class='peoplesdashboard_overlay';
+            overlay.className='peoplesdashboard_overlay';
             overlay.style.position="absolute";
             overlay.style.top="0px";
             overlay.style.left="0px";
@@ -107,10 +117,9 @@ function LocalMain ()
     var elms = document.querySelectorAll("[data-ft]");
     for(var i = 0; i<elms.length; i++) {
         if(elms.item(i).getAttribute('data-ft').match(/"ei":"/)) {
-    //        console.log("found suggested post");
             elms.item(i).style.position="relative";
             var overlay = document.createElement("div");
-            overlay.class='peoplesdashboard_overlay';
+            overlay.className='peoplesdashboard_overlay';
             overlay.style.position="absolute";
             overlay.style.top="0px";
             overlay.style.left="0px";
@@ -127,6 +136,7 @@ function LocalMain ()
     if(document.getElementById("peoplesdashboard_palette")==null) {
         var img = document.createElement('img');
         img.id='peoplesdashboard_palette';
+        img.className='peoplesdashboard_overlay';
         img.style.position="absolute";
         img.style.bottom="0px";
         img.style.left="0px";
@@ -136,5 +146,39 @@ function LocalMain ()
     }
 }
 
-LocalMain ();
-//@todo, check for insertion of nodes and rerun local main when that happens
+function removeLayer() {
+    var elements = document.getElementsByClassName("peoplesdashboard_overlay");
+    console.log("removeLayer",elements.length);
+    while(elements.length > 0){
+        elements[0].parentNode.removeChild(elements[0]);
+    }
+}
+
+function addButton() {
+        var img = document.createElement('img');
+        img.id='peoplesdashboard_button';
+        img.className='peoplesdashboard_off';
+        img.style.position="absolute";
+        img.style.top="0px";
+        img.style.right="20px";
+        img.style.zIndex="1000";
+        img.style.height="45px";
+        img.style.cursor="pointer";
+        img.src="https://raw.githubusercontent.com/digitalmethodsinitiative/peoplesdashboard/master/TOGGLE-02.png";
+        img.onclick = function() { toggleButton(this); };
+        document.getElementsByTagName('body').item(0).appendChild(img);
+}
+
+function toggleButton(el) {
+    console.log(el.className);
+    if(el.className=='peoplesdashboard_off') {
+        el.src="https://raw.githubusercontent.com/digitalmethodsinitiative/peoplesdashboard/master/TOGGLE-01.png";
+        el.className='peoplesdashboard_on';
+        addLayer();        
+    } else {
+        el.src="https://raw.githubusercontent.com/digitalmethodsinitiative/peoplesdashboard/master/TOGGLE-02.png";
+        el.className='peoplesdashboard_off';
+        removeLayer();        
+    }
+}
+addButton();
