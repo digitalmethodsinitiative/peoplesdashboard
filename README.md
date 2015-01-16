@@ -11,11 +11,11 @@ Currently the People's Dashboard is only implemented for Facebook.
 
 ## Firefox
 
-Install [GreaseMonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/). Make a new script, copy paste the code from [peoplesdashboard.js](https://raw.githubusercontent.com/digitalmethodsinitiative/peoplesdashboard/master/peoplesdashboard.js) into the new script, save it, go to Facebook and enjoy the People's Dashboard :).
+Install [GreaseMonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/). Click on the following link [peoplesdashboard.user.js](https://github.com/digitalmethodsinitiative/peoplesdashboard/raw/master/peoplesdashboard.user.js), click install, go to Facebook and enjoy the People's Dashboard :).
 
 ## Chrome 
 
-Install [TamperMonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en). Make a new script, copy paste the code from [peoplesdashboard.js](https://raw.githubusercontent.com/digitalmethodsinitiative/peoplesdashboard/master/peoplesdashboard.js) into the new script, save it, go to Facebook and enjoy the People's Dashboard :).
+Install [TamperMonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en). Click on the following link [peoplesdashboard.user.js](https://github.com/digitalmethodsinitiative/peoplesdashboard/raw/master/peoplesdashboard.user.js), click install, go to Facebook and enjoy the People's Dashboard :).
 
 # ToDo
 
