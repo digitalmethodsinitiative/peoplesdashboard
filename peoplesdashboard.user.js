@@ -2,7 +2,7 @@
 // @name         People's Dashboard
 // @namespace    http://www.digitalmethods.net
 // @version      0.1
-// @description  enter something useful
+// @description  The people’s dashboard is intended to be a critical layer on top of platforms.
 // @author       Erik Borra <erik@digitalmethods.net>
 // @match        https://www.facebook.com/*
 // @grant        none
