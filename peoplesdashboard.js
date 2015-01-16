@@ -6,36 +6,16 @@
 // @author       Erik Borra <erik@digitalmethods.net>
 // @match        https://www.facebook.com/*
 // @grant        none
-// @todo         pages, dynamically loaded content
+// @todo		 pages, dynamically loaded content
 // ==/UserScript==
 
 if (window.top != window.self)  //don't run on frames or iframes
     return;
 
-/*
-- people data {H}: #ff7bfc - 50 % opacity
-- platform data {P}: #7df3ff - 50 % opacity
-- mixed data {M}: #7da5ff - 50 % opacity
-- navigation data {N}: #d8d8d8 - 70% opacity
- */
-var colors = [];
-colors["people"] = "#ff7bfc"; // pink
-colors["platform"] = "#7df3ff"; // light blue
-colors["mixed"] = "#7da5ff"; // blue
-colors["navigation"] = "#d8d8d8"; // light grey
-var opacities = [];
-opacities["people"] = "0.5";
-opacities["platform"] = "0.5";
-opacities["mixed"] = "0.5";
-opacities["navigation"] = "0.7";
-
-
-// define the various elements in this array
-var elementLocations = []
-
 /* 
- * newsfeed 
+ * Define the XPATH expression to the elements + their categorization
  */
+var elementLocations = []
 
 // platform
 elementLocations["//*[@class='_585- _4w96']"]="platform"; /*search toolbar*/
@@ -44,36 +24,34 @@ elementLocations["//*[@class='_52lb _3-7 lfloat _ohe']"]="platform"; /*post char
 elementLocations["//*[@class='ego_column']"]="platform"; /*sponsored on the side*/ /*people you may know*/
 elementLocations["//*[@class='_4-u2 mbm _5jmm _5pat _5v3q _2l4l _x72']"]="platform"; /*sponsored in newsfeed*/
 elementLocations["//*[@class='_1-1']"]="platform"; /*Pop up suggest friends in news feed */
-// platform, added by erik
 elementLocations["//*[@class='ego_section']"]="platform";
 elementLocations["//*[@id='pagelet_canvas_nav_content']"]="platform";
+elementLocations["//*[@id='timeline_info_review_unit']"]="platform";
+elementLocations["//*[@class='megaphone_location_home']"]="platform";
+
+// people
 elementLocations["//*[@id='developerNav']"]="people";
 elementLocations["//*[@id='interestsNav']"]="people";
-elementLocations["//*[@id='timeline_info_review_unit']"]="platform";
 elementLocations["//*[@id='u_ps_0_1_1']"]="people";
 elementLocations["//*[@id='fbCoverImageContainer']"]="people";
 elementLocations["//*[@id='u_0_1']"]="people";
 elementLocations["//*[@class='_c51']"]="people";
 elementLocations["//*[@class='pvm uiBoxWhite topborder']"]="people";
-elementLocations["//*[@class='groupsJumpBarContainer']"]="navigation";
 elementLocations["//*[@id='u_0_1b']"]="people";
-
-
-// people
 elementLocations["//*[@id='pagesNav']"]="people";
 elementLocations["//*[@id='listsNav']"]="people";
 elementLocations["//*[@id='pagelet_composer']"]="people";
 elementLocations["//*[@id='pinnedNav']"]="navigation";
 elementLocations["//*[@id='pagelet_welcome_box']"]="people";
 elementLocations["//*[@class='fbChatSidebarBody']"]="people";
-elementLocations["//*[@id='stream_pagelet']//*[@class='userContentWrapper _5pcr _3ccb']"]="mixed";
 elementLocations["//*[@id='timeline_tab_content']//*[@class='userContentWrapper _5pcr _3ccb']"]="people";
 elementLocations["//*[@id='pagelet_group_mall']//*[@class='userContentWrapper _5pcr _3ccb']"]="people";
 elementLocations["//*[@class='_2dpe _1ayn']"]="people";
 elementLocations["//*[@class='timelineUnitContainer fbTimelineComposerUnit']"]="people";
-elementLocations["//*[@class='_2wnm']"]="mixed";
 
 // mixed
+elementLocations["//*[@id='stream_pagelet']//*[@class='userContentWrapper _5pcr _3ccb']"]="mixed";
+elementLocations["//*[@class='_2wnm']"]="mixed";
 elementLocations["//*[@id='eventsNav']"]="mixed"; /*events sidebar*/
 elementLocations["//*[@id='appsNav']"]="mixed"; /*apps sidebar*/
 elementLocations["//*[@id='groupsNav']"]="mixed"; /*groups*/
@@ -81,13 +59,31 @@ elementLocations["//*[@id='js_2p']"]="mixed";
 elementLocations["//*[@class='UFIBlingBox uiBlingBox feedbackBling']"]="mixed";// {M} /*numbers of likes, shares, comments*/
 elementLocations["//*[@class='tickerActivityStories']"]="mixed";
 elementLocations["//*[@class='fbReminders']"]="mixed";
-elementLocations["//*[@class='megaphone_location_home']"]="platform";
 
 // navigation
+elementLocations["//*[@class='groupsJumpBarContainer']"]="navigation";
 elementLocations["//*[@class='_2pdh _3zm- _55bi _3zm- _55bh']"]="navigation";
 elementLocations["//*[@class='_5861 textInput _586g _586p focus_target']"]="navigation";
 elementLocations["//*[@id='u_0_r']"]="navigation";
 
+/*
+ * Define colors and opacities
+ */
+var colors = [];
+colors["people"] = "#ff7bfc"; // pink
+colors["platform"] = "#7df3ff"; // light blue
+colors["mixed"] = "#7da5ff"; // blue
+colors["navigation"] = "#d8d8d8"; // light grey
+
+var opacities = [];
+opacities["people"] = "0.5";
+opacities["platform"] = "0.5";
+opacities["mixed"] = "0.5";
+opacities["navigation"] = "0.7";
+
+/*
+ * add overlays for all defined elements
+ */
 function addLayer ()
 {
     // loop over all element locations
@@ -146,6 +142,7 @@ function addLayer ()
     }
 }
 
+// removes all added elements
 function removeLayer() {
     var elements = document.getElementsByClassName("peoplesdashboard_overlay");
     console.log("removeLayer",elements.length);
@@ -154,21 +151,23 @@ function removeLayer() {
     }
 }
 
+// add switch to turn on/off the people's dashboard
 function addButton() {
         var img = document.createElement('img');
         img.id='peoplesdashboard_button';
-        img.className='peoplesdashboard_off';
+    	img.className='peoplesdashboard_off';
         img.style.position="absolute";
         img.style.top="0px";
         img.style.right="20px";
-        img.style.zIndex="1000";
-        img.style.height="45px";
-        img.style.cursor="pointer";
+    	img.style.zIndex="1000";
+    	img.style.height="45px";
+    	img.style.cursor="pointer";
         img.src="https://raw.githubusercontent.com/digitalmethodsinitiative/peoplesdashboard/master/TOGGLE-02.png";
-        img.onclick = function() { toggleButton(this); };
+    	img.onclick = function() { toggleButton(this); };
         document.getElementsByTagName('body').item(0).appendChild(img);
 }
 
+// actual toggle functionality
 function toggleButton(el) {
     console.log(el.className);
     if(el.className=='peoplesdashboard_off') {
@@ -176,9 +175,10 @@ function toggleButton(el) {
         el.className='peoplesdashboard_on';
         addLayer();        
     } else {
-        el.src="https://raw.githubusercontent.com/digitalmethodsinitiative/peoplesdashboard/master/TOGGLE-02.png";
+		el.src="https://raw.githubusercontent.com/digitalmethodsinitiative/peoplesdashboard/master/TOGGLE-02.png";
         el.className='peoplesdashboard_off';
         removeLayer();        
     }
 }
+
 addButton();
