@@ -19,5 +19,5 @@ Install [TamperMonkey](https://chrome.google.com/webstore/detail/tampermonkey/dh
 
 # ToDo
 
-* Facebook: login screen, pages
+* Facebook: login screen, pages, loading of dynamic content
 * Other platforms
