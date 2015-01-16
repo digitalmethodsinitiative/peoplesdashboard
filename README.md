@@ -4,7 +4,7 @@ The people’s dashboard is intended to be a critical layer on top of six differ
 
 More info can be found on our [wiki](https://wiki.digitalmethods.net/Dmi/PeoplesDashboard).
 
-Currently only the People's Dashboard is only implemented for Facebook.
+Currently the People's Dashboard is only implemented for Facebook.
 
 
 # How to Install
