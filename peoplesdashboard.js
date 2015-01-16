@@ -145,7 +145,6 @@ function addLayer ()
 // removes all added elements
 function removeLayer() {
     var elements = document.getElementsByClassName("peoplesdashboard_overlay");
-    console.log("removeLayer",elements.length);
     while(elements.length > 0){
         elements[0].parentNode.removeChild(elements[0]);
     }
@@ -168,7 +167,6 @@ function addButton() {
 
 // actual toggle functionality
 function toggleButton(el) {
-    console.log(el.className);
     if(el.className=='peoplesdashboard_off') {
         el.src="https://raw.githubusercontent.com/digitalmethodsinitiative/peoplesdashboard/master/TOGGLE-01.png";
         el.className='peoplesdashboard_on';
