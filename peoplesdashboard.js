@@ -7,7 +7,10 @@
 // @match        https://www.facebook.com/*
 // @grant        none
 // ==/UserScript==
-console.log('start');
+
+if (window.top != window.self)  //don't run on frames or iframes
+    return;
+
 // define the colors
 
 /*
@@ -72,48 +75,66 @@ elementLocations["//*[@class='fbReminders']"]="mixed";
 elementLocations["//*[@class='_2pdh _3zm- _55bi _3zm- _55bh']"]="navigation";
 elementLocations["//*[@class='_5861 textInput _586g _586p focus_target']"]="navigation";
 
-// loop over all element locations
-for(var query in elementLocations) {    
-    //var query = elementLocations[j];
-    type = elementLocations[query]
-    // locate element
-    var els = document.evaluate(query, document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-//    console.log(query,els.snapshotLength);
-    // for each element found, add overlay with color
-    for (var i = els.snapshotLength - 1; i >= 0; i--) {
-//      console.log(type,query);
-        var elm = els.snapshotItem(i);
-        elm.style.position="relative";
-        var overlay = document.createElement("div");
-        overlay.style.position="absolute";
-        overlay.style.top="0px";
-        overlay.style.left="0px";
-        overlay.style.right="0px";
-        overlay.style.bottom="0px";
-        overlay.style.zIndex="10000"; 
-        overlay.style.background=colors[type];
-        overlay.style.opacity=opacities[type];
-        elm.appendChild(overlay);
+function LocalMain ()
+{
+    // loop over all element locations
+    for(var query in elementLocations) {    
+        //var query = elementLocations[j];
+        type = elementLocations[query]
+        // locate element
+        var els = document.evaluate(query, document, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+    //    console.log(query,els.snapshotLength);
+        // for each element found, add overlay with color
+        for (var i = els.snapshotLength - 1; i >= 0; i--) {
+    //      console.log(type,query);
+            var elm = els.snapshotItem(i);
+            elm.style.position="relative";
+            var overlay = document.createElement("div");
+            overlay.class='peoplesdashboard_overlay';
+            overlay.style.position="absolute";
+            overlay.style.top="0px";
+            overlay.style.left="0px";
+            overlay.style.right="0px";
+            overlay.style.bottom="0px";
+            overlay.style.zIndex="10000"; 
+            overlay.style.background=colors[type];
+            overlay.style.opacity=opacities[type];
+            elm.appendChild(overlay);
+        }
+    }
+    
+    // find suggested posts etc (i.e. platform data)
+    var elms = document.querySelectorAll("[data-ft]");
+    for(var i = 0; i<elms.length; i++) {
+        if(elms.item(i).getAttribute('data-ft').match(/"ei":"/)) {
+    //        console.log("found suggested post");
+            elms.item(i).style.position="relative";
+            var overlay = document.createElement("div");
+            overlay.class='peoplesdashboard_overlay';
+            overlay.style.position="absolute";
+            overlay.style.top="0px";
+            overlay.style.left="0px";
+            overlay.style.right="0px";
+            overlay.style.bottom="0px";
+            overlay.style.zIndex="100000"; 
+            overlay.style.background=colors["platform"];
+            overlay.style.opacity=opacities["platform"];
+            elms.item(i).appendChild(overlay);
+            
+        }   
+    }
+    // add legend
+    if(document.getElementById("peoplesdashboard_palette")==null) {
+        var img = document.createElement('img');
+        img.id='peoplesdashboard_palette';
+        img.style.position="absolute";
+        img.style.bottom="0px";
+        img.style.left="0px";
+        img.style.width="100px";
+        img.src="https://raw.githubusercontent.com/digitalmethodsinitiative/peoplesdashboard/master/palette.png";
+        document.getElementsByTagName('body').item(0).appendChild(img);
     }
 }
 
-// find suggested posts etc (i.e. platform data)
-var elms = document.querySelectorAll("[data-ft]");
-for(var i = 0; i<elms.length; i++) {
-    if(elms.item(i).getAttribute('data-ft').match(/"ei":"/)) {
-//        console.log("found suggested post");
-        elms.item(i).style.position="relative";
-        var overlay = document.createElement("div");
-        overlay.style.position="absolute";
-        overlay.style.top="0px";
-        overlay.style.left="0px";
-        overlay.style.right="0px";
-        overlay.style.bottom="0px";
-        overlay.style.zIndex="100000"; 
-        overlay.style.background=colors["platform"];
-        overlay.style.opacity=opacities["platform"];
-        elms.item(i).appendChild(overlay);
-    }   
-}
-console.log('end');
-
+LocalMain ();
+//@todo, check for insertion of nodes and rerun local main when that happens
